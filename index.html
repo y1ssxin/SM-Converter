@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#4263eb">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Number Systems Calculator</title>
+<style>
+:root{--bg:#f3f5fb;--card:#fff;--tx:#1a2036;--mut:#6a7390;--ac:#4263eb;--ac2:#7048e8;--bd:#e1e5f2;--ok:#0b7a43;--er:#c92a2a;--rw:#f6f8ff;--sh:0 8px 30px rgba(40,60,140,.10);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1019;--card:#181c2b;--tx:#e8eaf3;--mut:#9aa1b8;--ac:#8aa0ff;--ac2:#a68bff;--bd:#2a3047;--ok:#4cd694;--er:#ff7b7b;--rw:#1f2438;--sh:0 8px 30px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#0e1019;--card:#181c2b;--tx:#e8eaf3;--mut:#9aa1b8;--ac:#8aa0ff;--ac2:#a68bff;--bd:#2a3047;--ok:#4cd694;--er:#ff7b7b;--rw:#1f2438;--sh:0 8px 30px rgba(0,0,0,.4)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px 14px 40px}
+.hero{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-radius:20px;padding:24px 20px;margin-bottom:14px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.hero h1{font-size:1.55rem;margin:0;position:relative}.hero p{margin:6px 0 0;opacity:.92;position:relative}
+.hero .bits{position:absolute;right:10px;top:4px;font:700 2.6rem/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:5px;opacity:.16;pointer-events:none}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 10px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;scrollbar-width:thin}
+.tabs button{flex:0 0 auto;white-space:nowrap;padding:9px 15px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;cursor:pointer;font:inherit;font-size:.92rem;transition:.15s}
+.tabs button:hover{border-color:var(--ac)}
+.tabs button.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(66,99,235,.35)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;display:none;box-shadow:var(--sh)}
+.card.on{display:block}
+label{display:block;font-size:.8rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--mut);margin:12px 0 5px}
+input,select{width:100%;padding:11px 12px;border:1.5px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;outline:none;transition:.15s}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(66,99,235,.18)}
+.row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
+.go{margin-top:14px;width:100%;padding:12px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font:inherit;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(66,99,235,.3);transition:.15s}
+.go:hover{transform:translateY(-1px)}.go:active{transform:none}
+.out{margin-top:16px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.93rem;word-break:break-all}
+.out .r{padding:10px 12px;border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:10px;margin-top:8px;background:var(--rw)}
+.out b{color:var(--ok)}.err{color:var(--er);font-weight:600}
+.ex{margin-top:14px;font-size:.85rem;color:var(--mut)}
+.ex a{display:inline-block;margin:4px 6px 0 0;padding:4px 10px;border:1px dashed var(--bd);border-radius:999px;color:var(--ac);cursor:pointer;white-space:nowrap}
+.ex a:hover{background:var(--rw)}
+.sub2{color:var(--mut);font-size:.85rem}
+.bt{display:inline-block;padding:3px 8px;border-radius:6px;margin:2px 4px 2px 0;color:#fff;font-weight:700;letter-spacing:1px}.bt.s{background:#e03131}.bt.e{background:#2f9e44}.bt.m{background:#4263eb}
+.tb{border-collapse:collapse;margin-top:8px;border-radius:10px;overflow:hidden}.tb td,.tb th{border:1px solid var(--bd);padding:5px 12px;text-align:center}.tb th{background:var(--rw)}
+.tb td.v1{background:var(--ac);color:#fff;font-weight:700}.tb td.v1 b{color:#fff}.tb td.vX{background:rgba(240,140,0,.25)}.tb td.v0{color:var(--mut)}
+.wr{overflow-x:auto}.km td{min-width:48px;height:42px}
+.ml{padding-left:20px;margin:0}.ml li{margin:10px 0}.ml li::marker{color:var(--ac)}
+footer{text-align:center;color:var(--mut);font-size:.8rem;margin-top:18px}
+
+button,a,input,select{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+body{-webkit-text-size-adjust:100%}
+main{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+input,select{font-size:16px;min-height:48px}
+.tabs button{min-height:44px}.go{min-height:50px}.ex a{padding:8px 12px}
+.out b{cursor:copy;border-bottom:1px dotted currentColor}
+.kp{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.kp button{min-width:44px;min-height:44px;flex:1 0 44px;max-width:64px;border:1px solid var(--bd);background:var(--rw);color:var(--tx);border-radius:10px;font:600 1rem ui-monospace,Menlo,Consolas,monospace;cursor:pointer}
+.kp button:active{background:var(--ac);color:#fff}
+.sw{flex:0 0 48px!important;align-self:flex-end;min-height:48px;border:1px solid var(--bd);background:var(--rw);color:var(--ac);border-radius:10px;font-size:1.2rem;cursor:pointer}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none;z-index:20;max-width:90vw}
+#toast.on{opacity:1}
+@media(max-width:420px){.stk{flex-direction:column;gap:0}main{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}.hero h1{font-size:1.3rem}.hero .bits{font-size:2rem}.card{padding:14px;border-radius:16px}.out{font-size:.88rem}.hero p{font-size:.9rem}}
+</style>
+</head>
+<body>
+<main>
+<div class="hero"><div class="bits">1011 0101</div><h1>🔢 Number Systems Calculator</h1><p>Structure Machine 1 · conversions, binary arithmetic, complements, codes, IEEE 754 and Boolean algebra</p></div>
+<div class="tabs">
+<button class="on" data-t="t1">🔁 Convert</button>
+<button data-t="t2">➕ Binary operations</button>
+<button data-t="t3">🔍 Find the base</button>
+<button data-t="t4">± Signed (complements)</button>
+<button data-t="t5">🔤 Codes</button>
+<button data-t="t6">🧮 IEEE 754</button>
+<button data-t="t7">💡 Boolean</button>
+<button data-t="t8">📘 Methods</button>
+</div>
+
+<section class="card on" id="t1">
+<label>Number (fractions allowed, e.g. 35.625 or FAC.9D)</label>
+<input id="cn" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="characters" value="35.625"><div class="kp" data-for="cn" data-keys="A B C D E F . - ⌫ ✕"></div>
+<div class="row">
+<div><label>From base</label><input id="cf" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" type="number" min="2" max="36" value="10"></div>
+<button class="sw" id="swp" type="button" aria-label="Swap bases">⇄</button><div><label>To base</label><input id="ct" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" type="number" min="2" max="36" value="2"></div>
+</div>
+<button class="go" id="b1">Convert</button>
+<div class="out" id="o1"></div>
+<div class="ex">Examples: <a data-n="315" data-f="10" data-t="2">(315)₁₀→₂</a><a data-n="1011.101" data-f="2" data-t="10">(1011.101)₂→₁₀</a><a data-n="3257" data-f="10" data-t="16">(3257)₁₀→₁₆</a><a data-n="FAC.9D" data-f="16" data-t="10">(FAC.9D)₁₆→₁₀</a><a data-n="2112" data-f="3" data-t="9">(2112)₃→₉</a></div>
+</section>
+
+<section class="card" id="t2">
+<div class="row stk">
+<div><label>A (binary)</label><input id="ba" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="1110011"></div>
+<div><label>B (binary)</label><input id="bb" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="11101"></div>
+</div>
+<label>Operation</label>
+<select id="bo"><option value="+">A + B</option><option value="-">A − B</option><option value="*">A × B</option><option value="/">A ÷ B</option></select>
+<button class="go" id="b2">Calculate</button>
+<div class="out" id="o2"></div>
+<div class="ex">Examples: <a data-a="1110011" data-b="11101" data-o="+">1110011+11101</a><a data-a="1010011" data-b="1111" data-o="-">1010011−1111</a><a data-a="10110010" data-b="1011" data-o="*">10110010×1011</a><a data-a="10100101" data-b="1011" data-o="/">10100101÷1011</a></div>
+</section>
+
+<section class="card" id="t3">
+<p class="sub2">Solve (digits)<sub>b</sub> = value in base 10, e.g. (1000)<sub>b</sub> = (27)<sub>10</sub>.</p>
+<div class="row stk">
+<div><label>Digits in unknown base b</label><input id="sd" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="characters" value="1000"><div class="kp" data-for="sd" data-keys="A B C D E F ⌫ ✕"></div></div>
+<div><label>Equals (decimal)</label><input id="sv" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="27"></div>
+</div>
+<button class="go" id="b3">Find b</button>
+<div class="out" id="o3"></div>
+<div class="ex">Examples: <a data-d="1000" data-v="27">(1000)ᵦ=27</a><a data-d="111" data-v="7">(111)ᵦ=7 (b=2)</a></div>
+</section>
+<section class="card" id="t4">
+<div class="row"><div><label>Decimal integer N</label><input id="sn" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="-25"><div class="kp" data-for="sn" data-keys="- ⌫ ✕"></div></div><div><label>Bits n</label><input id="sb" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" type="number" min="2" max="64" value="8"></div></div>
+<button class="go" id="b4">Represent N (sign-magnitude, 1's, 2's complement)</button>
+<label>Or decode a binary word</label><input id="sw" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="11100111">
+<button class="go" id="b4b">Decode word</button>
+<div class="out" id="o4"></div>
+</section>
+
+<section class="card" id="t5">
+<label>Decimal number</label><input id="cdn" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="259">
+<label>Text (ASCII, optional)</label><input id="cdt" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="Hi!">
+<button class="go" id="b5">Encode (BCD, Excess-3, Gray, ASCII)</button>
+<div class="out" id="o5"></div>
+</section>
+
+<section class="card" id="t6">
+<div class="row"><div><label>Decimal number</label><input id="ie" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" value="-13.625"></div>
+<div><label>Format</label><select id="if"><option value="32">32-bit (single)</option><option value="64">64-bit (double)</option></select></div></div>
+<button class="go" id="b6">Decimal → IEEE 754</button>
+<label>Or hex word (8 or 16 digits)</label><input id="ih" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="characters" value="C15A0000"><div class="kp" data-for="ih" data-keys="A B C D E F ⌫ ✕"></div>
+<button class="go" id="b6b">Hex → decimal</button>
+<div class="out" id="o6"></div>
+</section>
+
+<section class="card" id="t7">
+<label>Expression (+ OR, . or implicit AND, ' or ! NOT, ^ XOR; use !(…) for a negated group) or minterms like m(1,3,5,7) d(0)</label>
+<input id="bx" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="characters" value="A'B + AB' + C"><div class="kp" data-for="bx" data-keys="A B C D E ' + . ^ ! ( ) ⌫ ✕"></div>
+<button class="go" id="b7">Truth table, Karnaugh map, simplify</button>
+<div class="out" id="o7"></div>
+</section>
+
+<section class="card" id="t8"><ul class="ml">
+<li><b>Base b → decimal:</b> sum of digit × b<sup>position</sup> (negative powers after the point).</li>
+<li><b>Decimal → base b:</b> integer part: successive ÷ b, read remainders bottom→top. Fraction: successive × b, read integer parts top→bottom.</li>
+<li><b>2 ↔ 8 ↔ 16:</b> group bits by 3 (octal) or 4 (hex) from the point outward, padding with 0.</li>
+<li><b>Binary addition:</b> 0+0=0, 0+1=1, 1+1=10 (carry 1), 1+1+1=11. <b>Subtraction:</b> borrow, or add the 2's complement. <b>Multiplication:</b> shift and add. <b>Division:</b> shift and subtract.</li>
+<li><b>Negative numbers:</b> sign-magnitude (MSB = sign); 1's complement (invert bits); 2's complement (invert, +1). 2's range: −2<sup>n−1</sup> … 2<sup>n−1</sup>−1. A−B = A + 2's comp(B); overflow when two operands of the same sign give a result of the opposite sign; discard the final carry.</li>
+<li><b>Unknown base:</b> write the polynomial, e.g. (111)<sub>b</sub> = b²+b+1 = 7, then solve for b.</li>
+<li><b>Codes:</b> BCD 8421 digit by digit; Excess-3 = BCD of (digit+3); Gray: g<sub>n</sub>=b<sub>n</sub>, g<sub>i</sub>=b<sub>i</sub>⊕b<sub>i+1</sub>; back: b<sub>n</sub>=g<sub>n</sub>, b<sub>i</sub>=b<sub>i+1</sub>⊕g<sub>i</sub>. ASCII on 7 bits: '0'=48, 'A'=65, 'a'=97.</li>
+<li><b>IEEE 754:</b> 32 bits = 1 sign + 8 exponent (bias 127) + 23 mantissa; 64 bits = 1 + 11 (bias 1023) + 52. Value = (−1)<sup>s</sup> × 1.m × 2<sup>E−bias</sup>. Steps: sign → |x| in binary → normalize → E = e + bias → mantissa.</li>
+<li><b>Boolean algebra:</b> A+A'=1, A.A'=0, A+AB=A, A+A'B=A+B; De Morgan: (AB)'=A'+B', (A+B)'=A'B'. Simplify algebraically, with a Karnaugh map (group 1, 2, 4, 8 adjacent 1s, Gray order) or Quine–McCluskey.</li>
+<li><b>Adders:</b> half adder S=A⊕B, C=A.B; full adder S=A⊕B⊕Cin, Cout=AB+Cin(A⊕B).</li>
+</ul></section>
+<footer>💡 Tip: tap any green result to copy it. Results update as you type.</footer>
+</main>
+<div id="toast"></div>
+<script>
+const D="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const $=id=>document.getElementById(id);
+function parse(s,b){
+  s=s.trim().toUpperCase().replace(/\s/g,"").replace(",",".");
+  let neg=false;if(s[0]=="-"){neg=true;s=s.slice(1)}
+  const p=s.split(".");if(p.length>2||!s||p[0]===""&&!(p[1]))throw"Invalid number";
+  const ip=p[0]||"",fp=p[1]||"";
+  for(const c of ip+fp){const v=D.indexOf(c);if(v<0||v>=b)throw`Digit "${c}" is not valid in base ${b}`}
+  const B=BigInt(b);let i=0n;for(const c of ip)i=i*B+BigInt(D.indexOf(c));
+  let n=0n;for(const c of fp)n=n*B+BigInt(D.indexOf(c));
+  return{neg,i,n,d:B**BigInt(fp.length)};
+}
+function fmt(neg,i,n,d,b,max=12){
+  const B=BigInt(b);let s=i.toString(b).toUpperCase();if(i===0n)s="0";
+  let f="",k=0;
+  while(n>0n&&k<max){n*=B;f+=D[Number(n/d)];n%=d;k++}
+  return(neg?"-":"")+s+(f?"."+f:"")+(n>0n?"…":"");
+}
+function conv(s,f,t){const p=parse(s,f);return fmt(p.neg,p.i,p.n,p.d,t)}
+function bas(v){v=+v;if(!(v>=2&&v<=36&&Number.isInteger(v)))throw"Base must be an integer from 2 to 36";return v}
+
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".card").forEach(c=>c.classList.toggle("on",c.id===b.dataset.t));
+});
+const row=h=>`<div class="r">${h}</div>`;
+
+function run1(){
+  try{
+    const f=bas($("cf").value),t=bas($("ct").value),n=$("cn").value;
+    let h=row(`(${n.trim().toUpperCase()})<sub>${f}</sub> = <b>(${conv(n,f,t)})<sub>${t}</sub></b>`);
+    h+=[2,8,10,16].filter(x=>x!==f&&x!==t).map(x=>row(`base ${x}: ${conv(n,f,x)}`)).join("");
+    $("o1").innerHTML=h+steps(n,f,+t);
+  }catch(e){$("o1").innerHTML=`<span class="err">${e}</span>`}
+}
+function run2(){
+  try{
+    const a=parse($("ba").value,2),b=parse($("bb").value,2);
+    if(a.d!==1n||b.d!==1n)throw"Use whole binary numbers (no fractional point)";
+    const A=a.neg?-a.i:a.i,B=b.neg?-b.i:b.i,o=$("bo").value;
+    const bin=x=>(x<0n?"-":"")+(x<0n?-x:x).toString(2);
+    let h="";
+    if(o=="/"){
+      if(B===0n)throw"Division by zero";
+      const q=A/B,r=A%B;
+      h=row(`Quotient: <b>${bin(q)}</b> (${q})`)+row(`Remainder: <b>${bin(r)}</b> (${r})`);
+      if(r!==0n){const ra=r<0n?-r:r,bb=B<0n?-B:B;h+=row(`Exact: ${bin(q)}.${fmt(false,0n,ra,bb,2,10).slice(2)}`)}
+    }else{
+      const R=o=="+"?A+B:o=="-"?A-B:A*B;
+      h=row(`${bin(A)} ${o=="*"?"×":o=="-"?"−":o} ${bin(B)} = <b>${bin(R)}</b>`)+row(`Decimal: ${A} ${o=="*"?"×":o} ${B} = ${R}`);
+    }
+    $("o2").innerHTML=h;
+  }catch(e){$("o2").innerHTML=`<span class="err">${e}</span>`}
+}
+function run3(){
+  const d=$("sd").value.trim().toUpperCase(),v=BigInt($("sv").value||0);
+  const found=[];
+  try{
+    for(let b=2;b<=36;b++){
+      let ok=true,x=0n;
+      for(const c of d){const k=D.indexOf(c);if(k<0||k>=b){ok=false;break}x=x*BigInt(b)+BigInt(k)}
+      if(ok&&x===v)found.push(b);
+    }
+    $("o3").innerHTML=found.length?found.map(b=>row(`b = <b>${b}</b> → (${d})<sub>${b}</sub> = (${v})<sub>10</sub>`)).join(""):`<span class="err">No base from 2 to 36 works.</span>`;
+  }catch(e){$("o3").innerHTML=`<span class="err">Invalid input</span>`}
+}
+$("b1").onclick=run1;$("b2").onclick=run2;$("b3").onclick=run3;
+["cn","cf","ct"].forEach(i=>$(i).addEventListener("keydown",e=>e.key=="Enter"&&run1()));
+document.querySelectorAll("#t1 .ex a").forEach(a=>a.onclick=()=>{$("cn").value=a.dataset.n;$("cf").value=a.dataset.f;$("ct").value=a.dataset.t;run1()});
+document.querySelectorAll("#t2 .ex a").forEach(a=>a.onclick=()=>{$("ba").value=a.dataset.a;$("bb").value=a.dataset.b;$("bo").value=a.dataset.o;run2()});
+document.querySelectorAll("#t3 .ex a").forEach(a=>a.onclick=()=>{$("sd").value=a.dataset.d;$("sv").value=a.dataset.v;run3()});
+const ER=e=>`<span class="err">${typeof e=="string"?e:"Invalid input"}</span>`;
+const pb=(x,l)=>x.toString(2).padStart(l,"0");
+const sup=(a,b)=>`${a}<sup>${b}</sup>`;
+function steps(s,f,t){
+  const p=parse(s,f),T=BigInt(t),q=s.trim().toUpperCase().replace(",",".").replace("-","").split("."),fr=q[1]||"";
+  let h=row("<b>Method</b>");
+  if(f!=10)h+=row(`<b>Base ${f} → decimal</b> (digit × ${f}<sup>position</sup>):<br>`+(q[0]||"0").split("").map((c,i,a)=>`${D.indexOf(c)}×${sup(f,a.length-1-i)}`).concat(fr.split("").filter(Boolean).map((c,i)=>`${D.indexOf(c)}×${sup(f,"-"+(i+1))}`)).join(" + ")+` = <b>${conv(s,f,10)}</b>`);
+  if(t!=10){
+    let n=p.i,l=[];
+    if(n===0n)l.push("0");
+    while(n>0n&&l.length<60){const r=n%T;l.push(`${n} ÷ ${t} = ${n/T}, remainder ${r}${r>9n?" ("+D[Number(r)]+")":""}`);n/=T}
+    h+=row(`<b>Integer part: divide by ${t}</b>, read remainders bottom → top:<br>${l.join("<br>")}`);
+    if(p.n>0n){let x=p.n,m=[];while(x>0n&&m.length<10){const v=Number(x)/Number(p.d);x*=T;m.push(`${+v.toFixed(6)} × ${t} = ${+(v*t).toFixed(6)} → digit ${D[Number(x/p.d)]}`);x%=p.d}
+      h+=row(`<b>Fractional part: multiply by ${t}</b>, read digits top → bottom:<br>${m.join("<br>")}`)}
+  }
+  if([2,4,8,16,32].includes(f)&&[2,4,8,16,32].includes(t)&&f!=t)h+=row(`<b>Shortcut:</b> (${conv(s,f,2)})<sub>2</sub>, regroup the bits by ${Math.log2(t)} from the binary point`);
+  return h;
+}
+function signed(){try{
+  const N=BigInt($("sn").value.trim()),n=+$("sb").value;if(!(n>=2&&n<=64))throw"Bits: 2 to 64";
+  const M=1n<<BigInt(n-1),mod=M*2n,A=N<0n?-N:N;
+  if(N<-M||N>=M)throw`Out of range for ${n} bits (${-M} … ${M-1n} in 2's complement)`;
+  let h=row(`|N| on ${n} bits: ${pb(A,n)}`);
+  if(A<M)h+=row(`Sign-magnitude: <b>${(N<0n?"1":"0")+pb(A,n-1)}</b> (sign bit + ${n-1}-bit magnitude)`)+row(`1's complement: <b>${N<0n?pb(mod-1n-A,n):pb(A,n)}</b>${N<0n?" (invert every bit of "+pb(A,n)+")":""}`);
+  h+=row(`2's complement: <b>${pb((N+mod)%mod,n)}</b>${N<0n?" (1's complement + 1)":" (same as plain binary)"}`);
+  h+=row(`Ranges on ${n} bits: sign-magnitude and 1's: ±${M-1n}; 2's: ${-M} … ${M-1n}`);
+  $("o4").innerHTML=h}catch(e){$("o4").innerHTML=ER(e)}}
+function decode(){try{
+  const w=$("sw").value.trim();if(!/^[01]{2,64}$/.test(w))throw"Enter a binary word (2–64 bits)";
+  const U=BigInt("0b"+w),ng=w[0]=="1",full=1n<<BigInt(w.length);
+  $("o4").innerHTML=row(`Unsigned: ${U}`)+row(`Sign-magnitude: <b>${ng?-(U&((full>>1n)-1n)):U}</b>`)+row(`1's complement: <b>${ng?-(full-1n-U):U}</b>`)+row(`2's complement: <b>${ng?U-full:U}</b>`)}catch(e){$("o4").innerHTML=ER(e)}}
+function codes(){try{
+  const s=$("cdn").value.trim();if(!/^\d+$/.test(s))throw"Enter a non-negative integer";
+  const b=BigInt(s),bin=b.toString(2),p4=x=>pb(+x,4);
+  let h=row(`Binary: ${bin}`)+row(`BCD (8421): <b>${[...s].map(p4).join(" ")}</b>`)+row(`Excess-3: <b>${[...s].map(c=>p4(+c+3)).join(" ")}</b>`)+row(`Gray: <b>${(b^(b>>1n)).toString(2).padStart(bin.length,"0")}</b> (each bit = bit XOR the bit on its left)`);
+  [...$("cdt").value].slice(0,20).forEach(c=>{const k=c.charCodeAt(0);h+=row(`'${c.replace(/</g,"&lt;")}' → dec ${k}, hex ${k.toString(16).toUpperCase()}, bin ${pb(k,8)}`)});
+  $("o5").innerHTML=h}catch(e){$("o5").innerHTML=ER(e)}}
+const nz=m=>m.replace(/0+$/,"")||"0";
+function ieee(){try{
+  const x=parseFloat($("ie").value.replace(",",".")),w=+$("if").value;if(isNaN(x))throw"Invalid number";
+  const v=new DataView(new ArrayBuffer(8));let bits;
+  if(w==32){v.setFloat32(0,x);bits=pb(v.getUint32(0),32)}else{v.setFloat64(0,x);bits=pb(v.getBigUint64(0),64)}
+  const ew=w==32?8:11,bias=w==32?127:1023,ex=bits.slice(1,1+ew),m=bits.slice(1+ew),K=parseInt(ex,2)-bias,a=Math.abs(x),ds=/e/.test(String(a))?a.toFixed(20):String(a);
+  let h=row(`<b>1. Sign bit:</b> ${bits[0]} (${bits[0]=="1"?"negative":"positive"})`);
+  if(isFinite(a)&&a>0)h+=row(`<b>2. |x| in binary:</b> ${conv(ds,10,2)}`)+row(`<b>3. Normalize:</b> 1.${nz(m)} × 2<sup>${K}</sup>`)+row(`<b>4. Biased exponent:</b> ${K} + ${bias} = ${K+bias} = ${ex}`)+row(`<b>5. Mantissa</b> (bits after the leading 1, padded with 0): ${m}`);
+  h+=row(`<span class="bt s">${bits[0]}</span><span class="bt e">${ex}</span><span class="bt m">${m}</span> <span class="sub2">sign · exponent · mantissa</span><br>Hex: <b>${BigInt("0b"+bits).toString(16).toUpperCase().padStart(w/4,"0")}</b>`);
+  $("o6").innerHTML=h}catch(e){$("o6").innerHTML=ER(e)}}
+function ieeeRev(){try{
+  const h=$("ih").value.trim().replace(/^0x/i,"");if(!/^([0-9a-f]{8}|[0-9a-f]{16})$/i.test(h))throw"Enter 8 hex digits (32-bit) or 16 (64-bit)";
+  const L=h.length*4,bits=pb(BigInt("0x"+h),L),v=new DataView(new ArrayBuffer(8));let x;
+  if(L==32){v.setUint32(0,parseInt(h,16));x=v.getFloat32(0)}else{v.setBigUint64(0,BigInt("0x"+h));x=v.getFloat64(0)}
+  const ew=L==32?8:11,bias=L==32?127:1023,ex=bits.slice(1,1+ew),m=bits.slice(1+ew),K=parseInt(ex,2)-bias;
+  $("o6").innerHTML=row(`Binary: ${bits[0]} | ${ex} | ${m}`)+row(`Sign = ${bits[0]}, exponent = ${parseInt(ex,2)} − ${bias} = ${K}, mantissa = 1.${nz(m)}`)+row(`Value = (−1)<sup>${bits[0]}</sup> × 1.${nz(m)} × 2<sup>${K}</sup> = <b>${x}</b>`)}catch(e){$("o6").innerHTML=ER(e)}}
+function qm(n,mins,dc){
+  let terms=[...mins,...dc].map(m=>({b:pb(m,n),m:[m]})),primes=[];
+  while(terms.length){const used=new Set(),next=new Map();
+    for(let i=0;i<terms.length;i++)for(let j=i+1;j<terms.length;j++){
+      const a=terms[i].b,c=terms[j].b;let d=-1,k=0;
+      for(let z=0;z<n;z++)if(a[z]!==c[z]){k++;d=z}
+      if(k===1){used.add(i);used.add(j);const b=a.slice(0,d)+"-"+a.slice(d+1);
+        if(!next.has(b))next.set(b,{b,m:[...new Set([...terms[i].m,...terms[j].m])]})}}
+    terms.forEach((t,i)=>{if(!used.has(i))primes.push(t)});terms=[...next.values()]}
+  const left=new Set(mins),chosen=[];
+  mins.forEach(m=>{const c=primes.filter(p=>p.m.includes(m));if(c.length===1&&!chosen.includes(c[0]))chosen.push(c[0])});
+  chosen.forEach(p=>p.m.forEach(m=>left.delete(m)));
+  while(left.size){let best=null,bc=-1;primes.forEach(p=>{const c=p.m.filter(m=>left.has(m)).length;if(c>bc){bc=c;best=p}});chosen.push(best);best.m.forEach(m=>left.delete(m))}
+  return{primes,chosen}}
+function bool(){try{
+  const ex=$("bx").value.trim().replace(/’/g,"'");if(!ex)throw"Enter an expression";
+  let mins=[],dc=[],V,n;const mm=/^m\s*\(([^)]*)\)/i.exec(ex),dd=/d\s*\(([^)]*)\)/i.exec(ex),L=s=>s.split(/[,\s]+/).filter(Boolean).map(Number);
+  if(mm){mins=L(mm[1]);dc=dd?L(dd[1]):[];const all=[...mins,...dc];if(all.some(x=>!Number.isInteger(x)||x<0))throw"Bad minterm list";n=Math.max(2,Math.max(0,...all).toString(2).length);if(n>5)throw"Maximum 5 variables";V="ABCDE".slice(0,n).split("")}
+  else{V=[...new Set(ex.toUpperCase().match(/[A-Z]/g)||[])].sort();n=V.length;if(n<1||n>5)throw"Use 1 to 5 variables (A–E)";
+    const js=ex.toUpperCase().replace(/⊕/g,"^").replace(/([A-Z])'/g,"(!$1)").replace(/\+/g,"|").replace(/[.*·]/g,"&").replace(/([A-Z)])\s*(?=[A-Z(!])/g,"$1&");
+    const fn=new Function(...V,"return +!!("+js+")");
+    for(let m=0;m<1<<n;m++)if(fn(...V.map((_,k)=>(m>>(n-1-k))&1)))mins.push(m)}
+  mins=[...new Set(mins)].sort((a,b)=>a-b);dc=[...new Set(dc)];
+  const val=m=>mins.includes(m)?"1":dc.includes(m)?"X":"0",term=b=>[...b].map((c,k)=>c=="1"?V[k]:c=="0"?V[k]+"'":"").join("")||"1";
+  let tb=`<table class="tb"><tr>${V.map(v=>`<th>${v}</th>`).join("")}<th>F</th></tr>`;
+  for(let m=0;m<1<<n;m++)tb+=`<tr>${pb(m,n).split("").map(c=>`<td>${c}</td>`).join("")}<td class="v${val(m)}"><b>${val(m)}</b></td></tr>`;
+  const q=qm(n,mins,dc);
+  let h=row(`Minterms: Σm(${mins.join(", ")||"–"})`+(dc.length?` + d(${dc.join(", ")})`:""))+row(`Canonical SOP: ${mins.map(m=>term(pb(m,n))).join(" + ")||"0"}`)+`<div class="wr">${tb}</table></div>`;
+  if(n>=2&&n<=4){const rb=n==4?2:1,cb=n-rb,gr=k=>k==1?[0,1]:[0,1,3,2];
+    let km=`<table class="tb km"><tr><th>${V.slice(0,rb).join("")}\\${V.slice(rb).join("")}</th>${gr(cb).map(c=>`<th>${pb(c,cb)}</th>`).join("")}</tr>`;
+    gr(rb).forEach(rw=>{km+=`<tr><th>${pb(rw,rb)}</th>${gr(cb).map(c=>`<td class="v${val((rw<<cb)|c)}">${val((rw<<cb)|c)}</td>`).join("")}</tr>`});
+    h+=`<div class="sub2" style="margin-top:10px">Karnaugh map (Gray order)</div><div class="wr">${km}</table></div>`}
+  h+=row(`Prime implicants: ${q.primes.map(p=>term(p.b)).join(", ")||"–"}`)+row(`Simplified: <b>F = ${mins.length?q.chosen.map(p=>term(p.b)).join(" + "):"0"}</b>`);
+  $("o7").innerHTML=h}catch(e){$("o7").innerHTML=ER(e)}}
+$("b4").onclick=signed;$("b4b").onclick=decode;$("b5").onclick=codes;$("b6").onclick=ieee;$("b6b").onclick=ieeeRev;$("b7").onclick=bool;
+signed();codes();ieee();bool();
+run1();run2();run3();
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1500)}
+document.querySelectorAll(".kp").forEach(k=>{const el=$(k.dataset.for);k.dataset.keys.split(" ").forEach(key=>{const b=document.createElement("button");b.type="button";b.textContent=key;
+  b.addEventListener("mousedown",e=>e.preventDefault());
+  b.onclick=()=>{let a=el.selectionStart,z=el.selectionEnd;
+    if(key=="✕")el.value="";else if(key=="⌫"){if(a==z&&a>0)a--;el.setRangeText("",a,z,"end")}else el.setRangeText(key,a,z,"end");
+    el.dispatchEvent(new Event("input",{bubbles:true}))};
+  k.appendChild(b)})});
+$("swp").onclick=()=>{const a=$("cf").value;$("cf").value=$("ct").value;$("ct").value=a;run1()};
+const live={cn:run1,cf:run1,ct:run1,ba:run2,bb:run2,bo:run2,sd:run3,sv:run3,sn:signed,sb:signed,sw:decode,cdn:codes,cdt:codes,ie:ieee,if:ieee,ih:ieeeRev,bx:bool};
+let tm;Object.keys(live).forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,()=>{clearTimeout(tm);tm=setTimeout(()=>{try{live[id]()}catch(e){}},200)})));
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>b.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})));
+document.addEventListener("click",e=>{const b=e.target.closest(".out b");if(!b)return;const t=b.textContent;
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Copied: "+t.slice(0,30)),()=>{const r=document.createRange();r.selectNodeContents(b);const g=getSelection();g.removeAllRanges();g.addRange(r);toast("Selected: press Copy")})});
+
+</script>
+</body>
+</html>
